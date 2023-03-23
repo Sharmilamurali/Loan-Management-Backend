@@ -53,9 +53,9 @@ public class LoanControllerTest {
 	}
 
 	@Test
-	public void testViewAllLoanSuccess() throws Exception { 
+	public void testGetLoans() throws Exception { 
 		when(loanService.getAllLoan()).thenReturn(loanlist);
-		mockMvc.perform(get("/loan/viewAllLoan").header("Authorization",
+		mockMvc.perform(get("/loans/").header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
@@ -71,9 +71,9 @@ public class LoanControllerTest {
 //	}
 
 	@Test
-	public void testSearch() throws Exception {
-		when(loanService.searchByLoanNoAndOrFirstAndOrLastName("", "", "")).thenReturn(loanlist);
-		mockMvc.perform(get("/loan/search").param("loanNo", "").param("firstName", "").param("lastName", "").header(
+	public void testSearchLoans() throws Exception {
+		when(loanService.searchLoans("", "", "")).thenReturn(loanlist);
+		mockMvc.perform(get("/loans/search").param("loanNo", "").param("firstName", "").param("lastName", "").header(
 				"Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
@@ -83,7 +83,7 @@ public class LoanControllerTest {
 	@Test
 	public void testDeleteLoan() throws Exception {
 		when(loanService.deleteLoan(loan1.getLoanNo())).thenReturn("Deleted");
-		mockMvc.perform(delete("/loan/deleteLoan/{loanNo}", loan1.getLoanNo()).header("Authorization",
+		mockMvc.perform(delete("/loans/deleteLoan/{loanNo}", loan1.getLoanNo()).header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
@@ -92,16 +92,16 @@ public class LoanControllerTest {
 	@Test
 	public void testUpdateLoan() throws Exception {
 		when(loanService.updateLoan(loan1, "200")).thenReturn(loan1);
-		mockMvc.perform(put("/loan/updateLoan/{loanNo}", loan1.getLoanNo()).header("Authorization",
+		mockMvc.perform(put("/loans/updateLoan/{loanNo}", loan1.getLoanNo()).header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON).content(asJsonString(loan1))).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
-	public void testViewUserLoan() throws Exception {
-		when(loanService.getLoanbyUser("User123", "")).thenReturn(loanlist);
-		mockMvc.perform(get("/loan/viewUserLoan/{username}", user1.getUsername()).param("loanNo", "").header("Authorization",
+	public void testGetLoansByUsername() throws Exception {
+		when(loanService.getLoansByUser("User123", "")).thenReturn(loanlist);
+		mockMvc.perform(get("/loans/getLoans/{username}", user1.getUsername()).param("loanNo", "").header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
@@ -109,17 +109,17 @@ public class LoanControllerTest {
 
 	@Test
 	public void testCreateLoan() throws Exception {
-		when(loanService.addLoan(loan1)).thenReturn(loan1);
-		mockMvc.perform(post("/loan/createLoan").header("Authorization",
+		when(loanService.createLoan(loan1)).thenReturn(loan1);
+		mockMvc.perform(post("/loans/createLoan").header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON).content(asJsonString(loan1))).andExpect(status().isCreated())
 				.andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
-	public void testViewLoanbyId() throws Exception {
-		when(loanService.getLoanbyLoanId(loan1.getLoanNo())).thenReturn(loan1);
-		mockMvc.perform(get("/loan/viewLoanbyId/{loanNo}", loan1.getLoanNo()).header("Authorization",
+	public void testGetLoanById() throws Exception {
+		when(loanService.getLoanById(loan1.getLoanNo())).thenReturn(loan1);
+		mockMvc.perform(get("/loans/getLoan/{loanNo}", loan1.getLoanNo()).header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());

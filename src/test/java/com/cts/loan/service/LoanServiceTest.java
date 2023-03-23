@@ -59,12 +59,12 @@ public class LoanServiceTest {
 	}
 
 	@Test
-	public void testsearchByLoanNoAndOrFirstAndOrLastName() throws LoanNotFoundException {
+	public void testsearchLoans() throws LoanNotFoundException {
 		when(loanRepository
 				.findByLoanNoContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase("", "",
 						""))
 				.thenReturn(loanlist);
-		List<LoanEntity> loan = loanService.searchByLoanNoAndOrFirstAndOrLastName("", "", "");
+		List<LoanEntity> loan = loanService.searchLoans("", "", "");
 		assertEquals(loanlist, loan);
 	}
 
@@ -77,9 +77,9 @@ public class LoanServiceTest {
 	}
 
 	@Test
-	public void testAddLoan() throws LoanNotFoundException {
+	public void testCreateLoan() throws LoanNotFoundException {
 		when(loanRepository.save(loan1)).thenReturn(loan1);
-		LoanEntity loan = loanService.addLoan(loan1);
+		LoanEntity loan = loanService.createLoan(loan1);
 		assertEquals(loan1, loan);
 	}
 
@@ -91,30 +91,30 @@ public class LoanServiceTest {
 	}
 
 	@Test
-	public void testGetLoanbyUserForIfCondition() throws LoanNotFoundException {
+	public void testGetLoansByUserForIfCondition() throws LoanNotFoundException {
 		when(loanRepository.findByUser(user1)).thenReturn(loanlist);
-		List<LoanEntity> loan = loanService.getLoanbyUser("User123", "");
+		List<LoanEntity> loan = loanService.getLoansByUser("User123", "");
 		assertEquals(loanlist, loan);
 	}
 
 	@Test
-	public void testGetLoanbyUserForElseCondition() throws LoanNotFoundException {
+	public void testGetLoansByUserForElseCondition() throws LoanNotFoundException {
 		when(loanRepository.findByUserAndLoanNoContainingIgnoreCase(user1, "20")).thenReturn(loanlist);
-		List<LoanEntity> loan = loanService.getLoanbyUser("User123", "20");
+		List<LoanEntity> loan = loanService.getLoansByUser("User123", "20");
 		assertEquals(loanlist, loan);
 	}
 
 	@Test
-	public void testdeleteLoan() throws LoanNotFoundException {
+	public void testDeleteLoan() throws LoanNotFoundException {
 		when(loanRepository.findById("200")).thenReturn(optionalloan);
 		String msg = loanService.deleteLoan("200");
 		assertEquals("Deleted", msg);
 	}
 
 	@Test
-	public void testGetLoanbyLoanId() throws LoanNotFoundException {
+	public void testGetLoanById() throws LoanNotFoundException {
 		when(loanRepository.findById("200")).thenReturn(optionalloan);
-		LoanEntity loan = loanService.getLoanbyLoanId("200");
+		LoanEntity loan = loanService.getLoanById("200");
 		assertNotNull(loan);
 	}
 

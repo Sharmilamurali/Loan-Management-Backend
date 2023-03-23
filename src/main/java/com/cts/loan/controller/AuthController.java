@@ -18,7 +18,7 @@ import com.cts.loan.service.AuthService;
 import com.cts.loan.service.JwtUtil;
 
 @RestController
-@RequestMapping("/loan")
+@RequestMapping("/loans")
 public class AuthController {
 
 	Logger logger = LoggerFactory.getLogger(AuthController.class);

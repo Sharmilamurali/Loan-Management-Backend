@@ -19,15 +19,15 @@ import com.cts.loan.entity.LoanEntity;
 import com.cts.loan.exception.LoanNotFoundException;
 import com.cts.loan.service.LoanService;
 
-@RequestMapping("/loan")
+@RequestMapping("/loans")
 @RestController
 public class LoanController { 
 
 	@Autowired
 	private LoanService loanService;
 
-	@GetMapping("/viewAllLoan") // only Admin
-	public ResponseEntity<?> viewAllLoan(@RequestHeader("Authorization") String token) throws LoanNotFoundException {
+	@GetMapping("/") // only Admin
+	public ResponseEntity<?> getLoans(@RequestHeader("Authorization") String token) throws LoanNotFoundException {
 		try {
 			return new ResponseEntity<>(loanService.getAllLoan(), HttpStatus.OK);
 		} catch (LoanNotFoundException e) {
@@ -36,11 +36,11 @@ public class LoanController {
 	}
 
 	@GetMapping("/search") // both
-	public ResponseEntity<?> search(@RequestHeader("Authorization") String token,
+	public ResponseEntity<?> searchLoans(@RequestHeader("Authorization") String token,
 			@RequestParam(defaultValue = "") String loanNo, @RequestParam(defaultValue = "") String firstName,
 			@RequestParam(defaultValue = "") String lastName) {
 		try {
-			return new ResponseEntity<>(loanService.searchByLoanNoAndOrFirstAndOrLastName(loanNo, firstName, lastName),
+			return new ResponseEntity<>(loanService.searchLoans(loanNo, firstName, lastName),
 					HttpStatus.OK);
 		} catch (LoanNotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -67,11 +67,11 @@ public class LoanController {
 		}
 	}
 
-	@GetMapping("/viewUserLoan/{username}") // user's loan
-	public ResponseEntity<?> viewUserLoan(@RequestHeader("Authorization") String token,
+	@GetMapping("/getLoans/{username}") // user's loan
+	public ResponseEntity<?> getLoansByUsername(@RequestHeader("Authorization") String token,
 			@PathVariable("username") String username, @RequestParam(defaultValue = "") String loanNo) {
 		try {
-			return new ResponseEntity<List<LoanEntity>>(loanService.getLoanbyUser(username, loanNo), HttpStatus.OK);
+			return new ResponseEntity<List<LoanEntity>>(loanService.getLoansByUser(username, loanNo), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
@@ -81,17 +81,17 @@ public class LoanController {
 	public ResponseEntity<?> createLoan(@RequestHeader("Authorization") String token,
 			@Valid @RequestBody LoanEntity loan) {
 		try {
-			return new ResponseEntity<>(loanService.addLoan(loan), HttpStatus.CREATED);
+			return new ResponseEntity<>(loanService.createLoan(loan), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		}
 	}
 
-	@GetMapping("/viewLoanbyId/{loanNo}") // user's loan
-	public ResponseEntity<?> viewLoanbyId(@RequestHeader("Authorization") String token,
+	@GetMapping("/getLoan/{loanNo}") // user's loan
+	public ResponseEntity<?> getLoanById(@RequestHeader("Authorization") String token,
 			@PathVariable("loanNo") String loanNo) {
 		try {
-			return new ResponseEntity<LoanEntity>(loanService.getLoanbyLoanId(loanNo), HttpStatus.OK);
+			return new ResponseEntity<LoanEntity>(loanService.getLoanById(loanNo), HttpStatus.OK);
 		} catch (LoanNotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

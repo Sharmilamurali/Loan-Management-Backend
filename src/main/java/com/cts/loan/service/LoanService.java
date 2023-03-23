@@ -32,7 +32,7 @@ public class LoanService {
 		}
 	}
 
-	public List<LoanEntity> searchByLoanNoAndOrFirstAndOrLastName(String loanNo, String firstName, String lastName)
+	public List<LoanEntity> searchLoans(String loanNo, String firstName, String lastName)
 			throws LoanNotFoundException {
 		try {
 			List<LoanEntity> loans = loanRepository
@@ -54,7 +54,7 @@ public class LoanService {
 		}
 	}
 
-	public LoanEntity addLoan(LoanEntity loan) throws LoanNotFoundException {
+	public LoanEntity createLoan(LoanEntity loan) throws LoanNotFoundException {
 		try {
 			LoanEntity save = loanRepository.save(loan);
 			return save;
@@ -82,7 +82,7 @@ public class LoanService {
 		}
 	}
 
-	public List<LoanEntity> getLoanbyUser(String username, String loanNo) throws LoanNotFoundException {
+	public List<LoanEntity> getLoansByUser(String username, String loanNo) throws LoanNotFoundException {
 		try {
 			UserEntity user = getUser(username);
 			if (loanNo.isEmpty()) {
@@ -95,7 +95,7 @@ public class LoanService {
 		}
 	}
 
-	public LoanEntity getLoanbyLoanId(String loanNo) throws LoanNotFoundException {
+	public LoanEntity getLoanById(String loanNo) throws LoanNotFoundException {
 		Optional<LoanEntity> opt = loanRepository.findById(loanNo);
 		if (opt.isPresent()) {
 			return opt.get();
