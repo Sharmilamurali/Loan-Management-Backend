@@ -52,6 +52,25 @@ public class LoanServiceTest {
 
 	}
 
+//	@Test(expected = LoanNotFoundException.class)
+//	public void testGetAllLoan() {
+//		when(loanRepository.findAll()).thenReturn(loanlist);
+//		try {
+//			assertEquals(loanlist, loanService.getAllLoan());
+//		} catch (LoanNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+
+//	@Test(expected=LoanNotFoundException.class)
+//	public void testGetAllLoanFailure(){
+//		when(loanRepository.findAll()).thenThrow(LoanNotFoundException.class);
+//		//assertEquals(null, loanService.getAllLoan());
+//
+//		
+//		}
+
 	@Test
 	public void testGetAllLoan() throws LoanNotFoundException {
 		when(loanRepository.findAll()).thenReturn(loanlist);
@@ -93,14 +112,14 @@ public class LoanServiceTest {
 	@Test
 	public void testGetLoansByUserForIfCondition() throws LoanNotFoundException {
 		when(loanRepository.findByUser(user1)).thenReturn(loanlist);
-		List<LoanEntity> loan = loanService.getLoansByUser("User123", "");
+		List<LoanEntity> loan = loanService.getLoansByUser(user1, "");
 		assertEquals(loanlist, loan);
 	}
 
 	@Test
 	public void testGetLoansByUserForElseCondition() throws LoanNotFoundException {
 		when(loanRepository.findByUserAndLoanNoContainingIgnoreCase(user1, "20")).thenReturn(loanlist);
-		List<LoanEntity> loan = loanService.getLoansByUser("User123", "20");
+		List<LoanEntity> loan = loanService.getLoansByUser(user1, "20");
 		assertEquals(loanlist, loan);
 	}
 

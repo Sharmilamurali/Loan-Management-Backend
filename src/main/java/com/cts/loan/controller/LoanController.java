@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cts.loan.entity.LoanEntity;
+import com.cts.loan.entity.UserEntity;
 import com.cts.loan.exception.LoanNotFoundException;
 import com.cts.loan.service.LoanService;
 
@@ -71,7 +72,8 @@ public class LoanController {
 	public ResponseEntity<?> getLoansByUsername(@RequestHeader("Authorization") String token,
 			@PathVariable("username") String username, @RequestParam(defaultValue = "") String loanNo) {
 		try {
-			return new ResponseEntity<List<LoanEntity>>(loanService.getLoansByUser(username, loanNo), HttpStatus.OK);
+			UserEntity user = loanService.getUser(username);
+			return new ResponseEntity<List<LoanEntity>>(loanService.getLoansByUser(user, loanNo), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

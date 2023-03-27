@@ -82,9 +82,9 @@ public class LoanService {
 		}
 	}
 
-	public List<LoanEntity> getLoansByUser(String username, String loanNo) throws LoanNotFoundException {
+	public List<LoanEntity> getLoansByUser(UserEntity user, String loanNo) throws LoanNotFoundException {
 		try {
-			UserEntity user = getUser(username);
+			//UserEntity user = getUser(username);
 			if (loanNo.isEmpty()) {
 				return loanRepository.findByUser(user);
 			} else {

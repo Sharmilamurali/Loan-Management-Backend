@@ -25,12 +25,12 @@ import com.cts.loan.service.LoanService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-public class LoanControllerTest { 
+public class LoanControllerTest {
 
 	private MockMvc mockMvc;
 
 	@Mock
-	private LoanService loanService; 
+	private LoanService loanService;
 
 	@InjectMocks
 	private LoanController loanController;
@@ -53,14 +53,14 @@ public class LoanControllerTest {
 	}
 
 	@Test
-	public void testGetLoans() throws Exception { 
+	public void testGetLoans() throws Exception {
 		when(loanService.getAllLoan()).thenReturn(loanlist);
 		mockMvc.perform(get("/loans/").header("Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
 	}
-	
+
 //	@Test 
 //	public void testViewAllLoanFailure() throws Exception { 
 //		when(loanService.getAllLoan()).thenReturn(null);
@@ -100,8 +100,10 @@ public class LoanControllerTest {
 
 	@Test
 	public void testGetLoansByUsername() throws Exception {
-		when(loanService.getLoansByUser("User123", "")).thenReturn(loanlist);
-		mockMvc.perform(get("/loans/getLoans/{username}", user1.getUsername()).param("loanNo", "").header("Authorization",
+		when(loanService.getUser(user1.getUsername())).thenReturn(user1);
+		when(loanService.getLoansByUser(user1, "")).thenReturn(loanlist);
+		mockMvc.perform(get("/loans/getLoans/{username}", user1.getUsername()).param("loanNo", "").header(
+				"Authorization",
 				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBZG1pbjEiLCJyb2xlIjoiW0FkbWluXSIsImlhdCI6MTY3NDgwNTEwOSwiZXhwIjoxNjc0ODA2MDA5fQ.bITkb7Y0iBmA0-nQIiiBuw9pZyRDrWbZF-0b2MO18AQ")
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(MockMvcResultHandlers.print());
